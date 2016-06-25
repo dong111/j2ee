@@ -25,6 +25,19 @@
 		<!-- 配置Handler -->
 		<bean id="itemsController" name="/queryItems.action" class="cn.dong111.controller.ItemsController" />
 		
+			<!--简单url映射  -->
+		<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+			<property name="mappings">
+				<props>
+					<!-- 对itemsController进行url映射，url是/queryItems1.action -->
+					<prop key="/queryItems1.action">itemsController</prop>
+					<prop key="/queryItems2.action">itemsController</prop>
+				</props>
+			</property>
+		</bean>
+		
+		
+		
 		<!-- 视图解析器解析jsp解析，默认使用jstl标签，classpath下的得有jstl的包-->
 		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		</bean>
