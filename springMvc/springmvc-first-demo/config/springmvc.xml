@@ -20,6 +20,16 @@
 		<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>
 		
 		
+			<!-- 对于注解的Handler可以单个配置
+			实际开发中建议使用组件扫描
+			 -->
+			<!-- <bean class="cn.dong111.controller.ItemsController3" /> -->
+			<!-- 可以扫描controller、service、...
+			这里让扫描controller，指定controller的包
+			 -->
+		<context:component-scan base-package="cn.dong111.controller1"></context:component-scan>
+		
+		
 		<!-- 处理器映射器 将bean的name作为url进行查找 ，需要在配置Handler时指定beanname（就是url） 
 		所有的映射器都实现 HandlerMapping接口。
 		-->
