@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://F:/github/HelloSSM/HelloSSM.iml" filepath="F:/github/HelloSSM/HelloSSM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/templateProject.iml" filepath="$PROJECT_DIR$/templateProject.iml" />
+    </modules>
+  </component>
+</project>
