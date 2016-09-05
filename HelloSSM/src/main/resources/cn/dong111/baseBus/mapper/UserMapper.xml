@@ -8,13 +8,13 @@
   这样配置之后，所以的操作都会执行缓存，如果有的操作不需要的话，可以在sql配置里将useCache设置为false
    @Options(useCache = false,timeout = 10000,flushCache = false)
   -->
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache"  >
-    <property name="timeToIdleSeconds" value="3600"/><!--1 hour-->
-    <property name="timeToLiveSeconds" value="3600"/><!--1 hour-->
-    <property name="maxEntriesLocalHeap" value="1000"/>
-    <property name="maxEntriesLocalDisk" value="10000000"/>
-    <property name="memoryStoreEvictionPolicy" value="LRU"/>
-  </cache>
+  <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"  >-->
+    <!--<property name="timeToIdleSeconds" value="3600"/>&lt;!&ndash;1 hour&ndash;&gt;-->
+    <!--<property name="timeToLiveSeconds" value="3600"/>&lt;!&ndash;1 hour&ndash;&gt;-->
+    <!--<property name="maxEntriesLocalHeap" value="1000"/>-->
+    <!--<property name="maxEntriesLocalDisk" value="10000000"/>-->
+    <!--<property name="memoryStoreEvictionPolicy" value="LRU"/>-->
+  <!--</cache>-->
 
 
   <resultMap id="BaseResultMap" type="cn.dong111.baseBus.entity.User" >
