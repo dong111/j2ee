@@ -1,0 +1,98 @@
+/**
+ * �����������ܵĴ��ͷֲ�ʽJavaӦ�á�
+ *  ���е�ʾ������
+ *  ��Ȩ����   2008---2009
+ */
+package cn.dong111.book.chapter1.tcpnio;
+
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+
+/**
+ * 描述：基于Java NIO实现的tcp服务器端
+ *
+ * @author bluedavy
+ * 创建时间： 2008-12-2
+ */
+public class Server {
+
+	public static void main(String[] args) throws Exception{
+		int port=9527;
+		Selector selector=Selector.open();
+		ServerSocketChannel ssc=ServerSocketChannel.open();
+		ServerSocket serverSocket=ssc.socket();
+		serverSocket.bind(new InetSocketAddress(port));
+		System.out.println("Server listen on port: "+port);
+		//设置为非阻塞模式
+		ssc.configureBlocking(false);
+		//向channel注册selector已经感兴趣的连接事件
+		ssc.register(selector, SelectionKey.OP_ACCEPT);
+		while(true){
+			//阻塞至有感兴趣的IO事件发生，或者达到超时时间，如果希望一直等至有感兴趣的事件发生，可以调用无参数的select方法。如果希望不阻塞直接返回目前是否有感兴趣的事件发生，可调用selectNow方法
+			int nKeys=selector.select(1000);
+			if(nKeys>0){//如果nkeys大于零，说明有感兴趣的IO事件发生
+				for (SelectionKey key : selector.selectedKeys()) {
+					if(key.isAcceptable()){//
+						ServerSocketChannel server=(ServerSocketChannel) key.channel();
+						SocketChannel sc=server.accept();
+						if(sc==null){
+							continue;
+						}
+						sc.configureBlocking(false);
+						sc.register(selector, SelectionKey.OP_READ);
+					}
+					else if(key.isReadable()){//有流可以读取
+						ByteBuffer buffer=ByteBuffer.allocate(1024);
+						SocketChannel sc=(SocketChannel) key.channel();
+						int readBytes=0;
+						String message=null;
+						try{
+							int ret;
+							try{
+								//读取目前可读的流，sc.read返回的为成功复制到bytebuffer中的字节数，此步为阻塞操作，值可以为0，当已经是流结尾时候返回为-1
+								while((ret=sc.read(buffer))>0){
+									readBytes+=ret;
+								}
+							}
+							catch(Exception e){
+								readBytes=0;
+								// IGNORE
+							}
+							finally{
+								buffer.flip();
+							}
+							if(readBytes>0){
+								message=Charset.forName("UTF-8").decode(buffer).toString();
+								buffer = null;
+							}
+						}
+						finally{
+							if(buffer!=null){
+								buffer.clear();
+							}
+						}
+						if(readBytes>0){//可写入流
+							System.out.println("Message from client: "+ message);
+							if("quit".equalsIgnoreCase(message.trim())){
+								sc.close();
+								selector.close();
+								System.out.println("Server has been shutdown!");
+								System.exit(0);
+							}
+							String outMessage="Server response："+message;
+							sc.write(Charset.forName("UTF-8").encode(outMessage));
+						}
+					}
+				}
+				selector.selectedKeys().clear();
+			}
+		}
+	}
+	
+}
