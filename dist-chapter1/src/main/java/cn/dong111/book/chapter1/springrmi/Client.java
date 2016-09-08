@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * 描述
@@ -24,7 +25,7 @@ public class Client {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception, BeansException {
-		ApplicationContext ac=new ClassPathXmlApplicationContext("cn/dong111/book/chapter1/springrmi/client.xml");
+		ApplicationContext ac=new FileSystemXmlApplicationContext("cn/dong111/book/chapter1/springrmi/client.xml");
 		Business business=(Business) ac.getBean("businessService");
 		BufferedReader systemIn=new BufferedReader(new InputStreamReader(System.in));
         while(true){
